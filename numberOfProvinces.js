@@ -84,6 +84,7 @@ const markedVisited = (row, col, visited, matrix) => {
     }
 };
 
+
 const numberOfProvinces = (matrix) => {
     const visited = new Set();
     let provincesNumber = 0;

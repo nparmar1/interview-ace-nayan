@@ -15,6 +15,7 @@ Output: 2
 
 */
 
+
 const buildGraph = (edges) => {
     const graph = {};
 
