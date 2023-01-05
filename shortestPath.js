@@ -30,21 +30,21 @@ const getShortestPathLength = (edges, startNode, targetNode) => {
     const visited = new Set();
 
     visited.add(startNode);
-    queue.enqueue({ node: startNode, pathFromStart: 0 });
+    queue.enqueue({ node: startNode, pathLengthFromStart: 0 });
 
     const graph = buildGraph(edges);
     while (queue.size() > 0) {
-        const { node, pathFromStart } = queue.dequeue();
+        const { node, pathLengthFromStart } = queue.dequeue();
 
         // Process node
-        if (node === targetNode) return pathFromStart;
+        if (node === targetNode) return pathLengthFromStart;
 
         const neighbors = graph[node];
         for (const neighbor of neighbors) {
             if (visited.has(neighbor)) continue;
 
             visited.add(neighbor);
-            queue.enqueue({ node: neighbor, pathFromStart: pathFromStart + 1 });
+            queue.enqueue({ node: neighbor, pathLengthFromStart: pathLengthFromStart + 1 });
         }
     }
 

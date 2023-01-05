@@ -48,7 +48,7 @@ const actorGraph = {
     Kate: ['Jennifer'],
 };
 
-const targetActor = 'Kevin Bacon';
+const TARGET_ACTOR = 'Kevin Bacon';
 const NO_ACTOR_FOUND = '';
 
 const getActorsWhoHaveWorkedWith = (actor) => {
@@ -62,21 +62,21 @@ const getBaconNumber = (initialActor) => {
     const visited = new Set();
 
     visited.add(initialActor);
-    queue.enqueue({ actor: initialActor, pathSofar: 0 });
+    queue.enqueue({ actor: initialActor, pathLengthSofar: 0 });
 
     while (queue.size() > 0) {
-        const { actor, pathSofar } = queue.dequeue();
+        const { actor, pathLengthSofar } = queue.dequeue();
 
         // Process node
-        const isKevin = actor === targetActor;
-        if (isKevin) return pathSofar;
+        const isTargetActor = actor === TARGET_ACTOR;
+        if (isTargetActor) return pathLengthSofar;
 
         const neighbors = getActorsWhoHaveWorkedWith(actor);
         for (const neighbor of neighbors) {
             if (visited.has(neighbor)) continue;
 
             visited.add(neighbor);
-            queue.enqueue({ actor: neighbor, pathSofar: pathSofar + 1 });
+            queue.enqueue({ actor: neighbor, pathLengthSofar: pathLengthSofar + 1 });
         }
     }
 
