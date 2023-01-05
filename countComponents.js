@@ -15,6 +15,7 @@ Output: 2
 
 */
 
+const { Queue } = require('./utils/queue');
 
 const buildGraph = (edges) => {
     const graph = {};
@@ -22,11 +23,11 @@ const buildGraph = (edges) => {
     for (const edge of edges) {
         const [nodeOne, nodeTwo] = edge;
 
-        const isNodeOne = graph.hasOwnProperty(nodeOne);
-        const isNodeTwo = graph.hasOwnProperty(nodeTwo);
+        const containsNodeOne = graph.hasOwnProperty(nodeOne);
+        const containsNodeTwo = graph.hasOwnProperty(nodeTwo);
 
-        if (!isNodeOne) graph[nodeOne] = [];
-        if (!isNodeTwo) graph[nodeTwo] = [];
+        if (!containsNodeOne) graph[nodeOne] = [];
+        if (!containsNodeTwo) graph[nodeTwo] = [];
 
         graph[nodeOne].push(nodeTwo);
         graph[nodeTwo].push(nodeOne);
@@ -35,41 +36,50 @@ const buildGraph = (edges) => {
     return graph;
 };
 
-const markAsVisited = (node, edges, visited) => {
+const markComponentAsVisited = (node, edges, visited) => {
     const queue = new Queue();
-    queue.enqueue([node]);
+    visited.add(node);
+    queue.enqueue(node);
 
     const graph = buildGraph(edges);
     while (queue.size() > 0) {
         // Remove node
-        const [node] = queue.dequeue();
+        const node = queue.dequeue();
 
         // Process node
 
         // Get children
-        const children = graph[node];
-        for (const child of children) {
-            const [childNode] = child;
-            if (visited.has(childNode)) continue;
+        const neighbors = graph[node];
+        for (const neighbor of neighbors) {
+            const nodeNeighbor = neighbor;
+            if (visited.has(nodeNeighbor)) continue;
 
-            visited.add(childNode);
-            queue.enqueue([childNode]);
+            visited.add(nodeNeighbor);
+            queue.enqueue(nodeNeighbor);
         }
     }
 };
 
-const countComponents = (nodes, edges) => {
+const countComponents = (numNodes, edges) => {
     const visited = new Set();
-    let connectedComponents = 0;
+    let numOfConnectedComponents = 0;
 
-    for (const node = 0; node < nodes; node++) {
-        if (visited.has(node)) continue;
+    for (let nodeId = 0; nodeId < numNodes; nodeId++) {
+        if (visited.has(nodeId)) continue;
 
-        visited.add(node);
-        connectedComponents++;
-
-        markAsVisited(node, edges, visited);
+        numOfConnectedComponents++;
+        markComponentAsVisited(nodeId, edges, visited);
     }
 
-    return connectedComponents;
+    return numOfConnectedComponents;
 };
+
+edges = [
+    [0, 1],
+    [1, 2],
+    [3, 4],
+];
+const numNodes = 5;
+
+console.log(`Your answer: ${countComponents(numNodes, edges)}`);
+console.log(`Correct answer: ${2}`);

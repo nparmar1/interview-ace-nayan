@@ -18,7 +18,7 @@ Output: 2
 
 */
 
-const { Queue } = require('../utils/queue');
+const { Queue } = require('./utils/queue');
 
 const directions = [
     [1, 0],
@@ -31,37 +31,40 @@ const CONNECTED = 1;
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isBound = (row, col, matrix) => {
-    const rowBound = matrix.length;
-    const colBound = matrix[0].length;
+const isInBounds = (row, col, adjacencyMatrix) => {
+    const numRows = adjacencyMatrix.length;
+    const numCols = adjacencyMatrix[0].length;
 
-    const isRowBound = row >= 0 && row < rowBound;
-    const isColBound = col >= 0 && col < colBound;
+    const isInRowBound = row >= 0 && row < numRows;
+    const isInColBound = col >= 0 && col < numCols;
 
-    return isRowBound && isColBound;
+    return isInRowBound && isInColBound;
 };
 
-const getChildren = (row, col, matrix) => {
-    const children = [];
+const getNeighbors = (row, col, adjacencyMatrix) => {
+    const neighbors = [];
 
     for (const direction of directions) {
-        const [rowDir, colDir] = direction;
+        const [rowChange, colChange] = direction;
 
-        const newRow = row + rowDir;
-        const newCol = col + colDir;
+        const newRow = row + rowChange;
+        const newCol = col + colChange;
 
-        const isInBound = isBound(newRow, newCol, matrix);
+        const isInBound = isInBounds(newRow, newCol, adjacencyMatrix);
         if (!isInBound) continue;
-        if (matrix[newRow][newCol] !== CONNECTED) continue;
+        if (adjacencyMatrix[newRow][newCol] !== CONNECTED) continue;
 
-        children.push([row, col]);
+        neighbors.push([row, col]);
     }
 
-    return children;
+    return neighbors;
 };
 
-const markedVisited = (row, col, visited, matrix) => {
+const markComponentAsVisited = (row, col, visited, adjacencyMatrix) => {
     const queue = new Queue();
+    const rowColString = getRowColString(row, col);
+    visited.add(rowColString);
+
     queue.enqueue([row, col]);
 
     while (queue.size() > 0) {
@@ -71,36 +74,42 @@ const markedVisited = (row, col, visited, matrix) => {
         // Process node
 
         // Get children
-        const children = getChildren(row, col, matrix);
-        for (const child of children) {
-            const [rowChild, colChild] = child;
+        const neighbors = getNeighbors(row, col, adjacencyMatrix);
+        for (const neighbor of neighbors) {
+            const [rowNeighbor, colNeighbors] = neighbor;
 
-            const childRowColString = getRowColString(rowChild, colChild);
-            if (visited.has(childRowColString)) continue;
+            const neighborRowColString = getRowColString(rowNeighbor, colNeighbors);
+            if (visited.has(neighborRowColString)) continue;
 
-            visited.add(childRowColString);
-            queue.enqueue([rowChild, colChild]);
+            visited.add(neighborRowColString);
+            queue.enqueue([rowNeighbor, colNeighbors]);
         }
     }
 };
 
-
-const numberOfProvinces = (matrix) => {
+const numberOfProvinces = (adjacencyMatrix) => {
     const visited = new Set();
-    let provincesNumber = 0;
+    let numProvinces = 0;
 
-    const rows = matrix.length;
-    const cols = matrix[0].length;
+    const numRows = adjacencyMatrix.length;
+    const numCols = adjacencyMatrix[0].length;
 
-    for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
+    for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < numCols; col++) {
             const rowColString = getRowColString(row, col);
             if (visited.has(rowColString)) continue;
 
-            provincesNumber++;
-            visited.add(rowColString);
-            markedVisited(row, col, visited, matrix);
+            numProvinces++;
+            markComponentAsVisited(row, col, visited, adjacencyMatrix);
         }
     }
-    return provincesNumber;
+    return numProvinces;
 };
+
+const isConnected = [
+    [1, 1, 0],
+    [1, 1, 0],
+    [0, 0, 1],
+];
+console.log(`Your answer: ${numberOfProvinces(isConnected)}`);
+console.log(`Correct answer: ${2}`);
