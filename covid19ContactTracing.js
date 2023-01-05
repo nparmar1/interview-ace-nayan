@@ -38,7 +38,7 @@ const buildGraph = (edges) => {
 const findClosestContactDistance = (initialPersonId, friendships, infectedPeople) => {
     const queue = new Queue();
     const visited = new Set();
-    const infected = new Set(infectedPeople);
+    const infectedPeopleSet = new Set(infectedPeople);
 
     visited.add(initialPersonId);
     queue.enqueue({ personId: initialPersonId, pathLengthSoFar: 0 });
@@ -48,7 +48,7 @@ const findClosestContactDistance = (initialPersonId, friendships, infectedPeople
         const { personId, pathLengthSoFar } = queue.dequeue();
 
         // Process node
-        const isInfected = infected.has(personId);
+        const isInfected = infectedPeopleSet.has(personId);
         if (isInfected) return pathLengthSoFar;
 
         const neighbors = graph[personId];
@@ -83,4 +83,3 @@ console.log(
 );
 console.log(`Correct answer: ${4}`);
 console.log();
-

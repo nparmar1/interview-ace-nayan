@@ -32,8 +32,9 @@ const getNeighbors = (node, adjacencyMatrix) => {
     const numNodes = adjacencyMatrix[node].length;
 
     for (let potentialNeighborId = 0; potentialNeighborId < numNodes; potentialNeighborId++) {
-        if (adjacencyMatrix[node][potentialNeighborId] === FRIEND && potentialNeighborId !== node)
-            neighbors.push(potentialNeighborId);
+        const isNeigbor =
+            adjacencyMatrix[node][potentialNeighborId] === FRIEND && potentialNeighborId !== node;
+        if (isNeigbor) neighbors.push(potentialNeighborId);
     }
 
     return neighbors;
@@ -51,10 +52,10 @@ const getFriendRecommendations = (initialUserId, friendships) => {
         const { userId, distanceSoFar } = queue.dequeue();
 
         // Process node
-        const isFriends = friendships[userId][initialUserId] !== FRIEND;
+        const isFriendsWithInitialUserId = friendships[userId][initialUserId] === FRIEND;
         const isSeperated = distanceSoFar === DEGREE_OF_SEPERATION;
 
-        if (isFriends && isSeperated) friendRec.push(userId);
+        if (!isFriendsWithInitialUserId && isSeperated) friendRec.push(userId);
         if (distanceSoFar > DEGREE_OF_SEPERATION) break;
 
         const neighbors = getNeighbors(userId, friendships);
