@@ -41,22 +41,22 @@ const findClosestContactDistance = (initialPersonId, friendships, infectedPeople
     const infected = new Set(infectedPeople);
 
     visited.add(initialPersonId);
-    queue.enqueue({ personId: initialPersonId, pathSoFar: 0 });
+    queue.enqueue({ personId: initialPersonId, pathLengthSoFar: 0 });
 
     const graph = buildGraph(friendships);
     while (queue.size() > 0) {
-        const { personId, pathSoFar } = queue.dequeue();
+        const { personId, pathLengthSoFar } = queue.dequeue();
 
         // Process node
         const isInfected = infected.has(personId);
-        if (isInfected) return pathSoFar;
+        if (isInfected) return pathLengthSoFar;
 
         const neighbors = graph[personId];
         for (const neighbor of neighbors) {
             if (visited.has(neighbor)) continue;
 
             visited.add(neighbor);
-            queue.enqueue({ personId: neighbor, pathSoFar: pathSoFar + 1 });
+            queue.enqueue({ personId: neighbor, pathLengthSoFar: pathLengthSoFar + 1 });
         }
     }
 

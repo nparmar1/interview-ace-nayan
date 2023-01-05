@@ -27,12 +27,13 @@ const friendships = [
 ];
 */
 
-const getChildren = (node, adjacencyMatrix) => {
+const getNeighbors = (node, adjacencyMatrix) => {
     const neighbors = [];
-    const matrixNodeLength = adjacencyMatrix[node].length;
+    const numNodes = adjacencyMatrix[node].length;
 
-    for (let nodeId = 0; nodeId < matrixNodeLength; nodeId++) {
-        if (adjacencyMatrix[node][nodeId] === FRIEND && nodeId !== node) neighbors.push(nodeId);
+    for (let potentialNeighborId = 0; potentialNeighborId < numNodes; potentialNeighborId++) {
+        if (adjacencyMatrix[node][potentialNeighborId] === FRIEND && potentialNeighborId !== node)
+            neighbors.push(potentialNeighborId);
     }
 
     return neighbors;
@@ -56,12 +57,12 @@ const getFriendRecommendations = (initialUserId, friendships) => {
         if (isFriends && isSeperated) friendRec.push(userId);
         if (distanceSoFar > DEGREE_OF_SEPERATION) break;
 
-        const children = getChildren(userId, friendships);
-        for (const child of children) {
-            if (visited.has(child)) continue;
+        const neighbors = getNeighbors(userId, friendships);
+        for (const neighbor of neighbors) {
+            if (visited.has(neighbor)) continue;
 
-            visited.add(child);
-            queue.enqueue({ userId: child, distanceSoFar: distanceSoFar + 1 });
+            visited.add(neighbor);
+            queue.enqueue({ userId: neighbor, distanceSoFar: distanceSoFar + 1 });
         }
     }
 
