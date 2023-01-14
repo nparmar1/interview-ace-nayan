@@ -50,8 +50,7 @@ const markComponentAsVisited = (node, edges, visited) => {
 
         // Get children
         const neighbors = graph[node];
-        for (const neighbor of neighbors) {
-            const nodeNeighbor = neighbor;
+        for (const nodeNeighbor of neighbors) {
             if (visited.has(nodeNeighbor)) continue;
 
             visited.add(nodeNeighbor);

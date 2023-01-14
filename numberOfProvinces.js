@@ -20,89 +20,62 @@ Output: 2
 
 const { Queue } = require('./utils/queue');
 
-const directions = [
-    [1, 0],
-    [0, 1],
-    [-1, 0],
-    [0, -1],
-];
-
 const CONNECTED = 1;
 
-const getRowColString = (row, col) => `${row}, ${col}`;
-
-const isInBounds = (row, col, adjacencyMatrix) => {
-    const numRows = adjacencyMatrix.length;
-    const numCols = adjacencyMatrix[0].length;
-
-    const isInRowBound = row >= 0 && row < numRows;
-    const isInColBound = col >= 0 && col < numCols;
-
-    return isInRowBound && isInColBound;
-};
-
-const getNeighbors = (row, col, adjacencyMatrix) => {
+const getNeighbors = (node, matrix) => {
+    const currentRow = matrix[node].length;
     const neighbors = [];
 
-    for (const direction of directions) {
-        const [rowChange, colChange] = direction;
+    for (let neighborNode = 0; neighborNode < currentRow; neighborNode++) {
+        const isSelf = neighborNode === node;
+        const isChildren = matrix[node][neighborNode] !== CONNECTED;
 
-        const newRow = row + rowChange;
-        const newCol = col + colChange;
+        if (isSelf) continue;
+        if (isChildren) continue;
 
-        const isInBound = isInBounds(newRow, newCol, adjacencyMatrix);
-        if (!isInBound) continue;
-        if (adjacencyMatrix[newRow][newCol] !== CONNECTED) continue;
-
-        neighbors.push([row, col]);
+        neighbors.push(neighborNode);
     }
 
     return neighbors;
 };
 
-const markComponentAsVisited = (row, col, visited, adjacencyMatrix) => {
+const markComponentAsVisited = (node, matrix, visited) => {
     const queue = new Queue();
-    const rowColString = getRowColString(row, col);
-    visited.add(rowColString);
+    visited.add(node);
 
-    queue.enqueue([row, col]);
+    queue.enqueue(node);
 
     while (queue.size() > 0) {
         // Remove row, col
-        const [row, col] = queue.dequeue();
+        const node = queue.dequeue();
 
         // Process node
 
         // Get children
-        const neighbors = getNeighbors(row, col, adjacencyMatrix);
-        for (const neighbor of neighbors) {
-            const [rowNeighbor, colNeighbors] = neighbor;
+        const neighbors = getNeighbors(node, matrix);
+        for (const nodeNeighbor of neighbors) {
+            if (visited.has(nodeNeighbor)) continue;
 
-            const neighborRowColString = getRowColString(rowNeighbor, colNeighbors);
-            if (visited.has(neighborRowColString)) continue;
-
-            visited.add(neighborRowColString);
-            queue.enqueue([rowNeighbor, colNeighbors]);
+            visited.add(nodeNeighbor);
+            queue.enqueue(nodeNeighbor);
         }
     }
 };
 
-const numberOfProvinces = (adjacencyMatrix) => {
+const numberOfProvinces = (matrix) => {
     const visited = new Set();
     let numProvinces = 0;
+    const cities = matrix.length;
 
-    const numRows = adjacencyMatrix.length;
-    const numCols = adjacencyMatrix[0].length;
+    for (let city = 0; city < cities; city++) {
+        if (visited.has(city)) continue;
 
-    for (let row = 0; row < numRows; row++) {
-        for (let col = 0; col < numCols; col++) {
-            const rowColString = getRowColString(row, col);
-            if (visited.has(rowColString)) continue;
+        numProvinces++;
+        visited.add(city);
 
-            numProvinces++;
-            markComponentAsVisited(row, col, visited, adjacencyMatrix);
-        }
+        markComponentAsVisited(city, matrix, visited);
     }
+
     return numProvinces;
 };
 
