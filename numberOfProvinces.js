@@ -23,27 +23,27 @@ const { Queue } = require('./utils/queue');
 const CONNECTED = 1;
 
 const getNeighbors = (node, matrix) => {
-    const currentRow = matrix[node].length;
-    const neighbors = [];
+    const potentialNeighbors = matrix[node].length;
+    const potentialNeighborNodes = [];
 
-    for (let neighborNode = 0; neighborNode < currentRow; neighborNode++) {
-        const isSelf = neighborNode === node;
-        const isChildren = matrix[node][neighborNode] !== CONNECTED;
+    for (let potentialNeighborNode = 0; potentialNeighborNode < potentialNeighbors; potentialNeighborNode++) {
+        const isSelf = potentialNeighborNode === node;
+        const isPotentialNeighbor = matrix[node][potentialNeighborNode] === CONNECTED;
 
         if (isSelf) continue;
-        if (isChildren) continue;
+        if (!isPotentialNeighbor) continue;
 
-        neighbors.push(neighborNode);
+        potentialNeighborNodes.push(potentialNeighborNode);
     }
 
-    return neighbors;
+    return potentialNeighborNodes;
 };
 
-const markComponentAsVisited = (node, matrix, visited) => {
+const markComponentAsVisited = (startNode, matrix, visited) => {
     const queue = new Queue();
-    visited.add(node);
+    visited.add(startNode);
 
-    queue.enqueue(node);
+    queue.enqueue(startNode);
 
     while (queue.size() > 0) {
         // Remove row, col
