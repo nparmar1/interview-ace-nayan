@@ -14,7 +14,7 @@ You can assume that this is structured like a normal file system (it's impossibl
 const { Queue } = require('./utils/queue');
 
 const SOME_FILES_ARE_MISSING = -1;
-const EMPTY_FOLDER = 0;
+
 
 const getMinDepthToFindAllFiles = (directoryStructure, requiredFiles, initialRootDirectory) => {
     const queue = new Queue();
@@ -29,10 +29,10 @@ const getMinDepthToFindAllFiles = (directoryStructure, requiredFiles, initialRoo
 
         // Process node
         if (requiredFilesSet.has(rootDirectory)) requiredFilesSet.delete(rootDirectory);
-        if (requiredFilesSet.size === EMPTY_FOLDER) return depthSoFar;
+        if (requiredFilesSet.size === 0) return depthSoFar;
 
-        const hasProperty = directoryStructure.hasOwnProperty(rootDirectory);
-        if (!hasProperty) continue;
+        const hasChildrenDirectories = directoryStructure.hasOwnProperty(rootDirectory);
+        if (!hasChildrenDirectories) continue;
 
         const children = directoryStructure[rootDirectory];
         for (child of children) {

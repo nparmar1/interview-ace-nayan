@@ -9,7 +9,7 @@ The length of a clear path is the number of visited cells of this path.
 */
 
 const { Queue } = require('./utils/queue');
-const PATH = 0;
+const CLEAR = 0;
 const NO_CLEAR_PATH = -1;
 
 /*
@@ -32,7 +32,7 @@ const directions = [
     [1, 1],
 ];
 
-const isInBoundWithRowAndCol = (grid, newRow, newCol) => {
+const isInBounds = (grid, newRow, newCol) => {
     const rowBoundLength = grid.length;
     const colBoundLength = grid[0].length;
 
@@ -51,9 +51,9 @@ const getNeighbors = (grid, row, col) => {
         const newRow = row + rowDir;
         const newCol = col + colDir;
 
-        const isInBound = isInBoundWithRowAndCol(grid, newRow, newCol);
+        const isInBound = isInBounds(grid, newRow, newCol);
 
-        if (!isInBound || grid[newRow][newCol] !== PATH) continue;
+        if (!isInBound || grid[newRow][newCol] !== CLEAR) continue;
         neighbors.push({ row: newRow, col: newCol });
     }
 
@@ -77,11 +77,10 @@ const getShortestPathBinaryMatrix = (grid) => {
 
     queue.enqueue({ row: 0, col: 0, pathSoFar: 1 });
 
+    const targetRow = grid.length - 1;
+    const targetCol = grid[0].length - 1;
     while (queue.size() > 0) {
         const { row, col, pathSoFar } = queue.dequeue();
-
-        const targetRow = grid.length - 1;
-        const targetCol = grid[0].length - 1;
 
         if (row === targetRow && col === targetCol) return pathSoFar;
 
