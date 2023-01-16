@@ -44,11 +44,11 @@ const getMinKnightMoves = (targetRow, targetCol) => {
     const queue = new Queue();
     const visited = new Set();
 
-    const initialCoordDistance = { row: 0, col: 0, distanceFromStart: 0 };
-    const initialCoordDistanceString = getCoordString({ row: 0, col: 0 });
+    const initialRowAndCol= { row: 0, col: 0, distanceFromStart: 0 };
+    const initialRowAndColString = getCoordString({ row: 0, col: 0 });
 
-    visited.add(initialCoordDistanceString);
-    queue.enqueue(initialCoordDistance);
+    visited.add(initialRowAndColString);
+    queue.enqueue(initialRowAndCol);
 
     while (queue.size() > 0) {
         const { row, col, distanceFromStart } = queue.dequeue();

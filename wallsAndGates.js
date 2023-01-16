@@ -21,11 +21,11 @@ const GATE = 0;
 const WALL = -1;
 
 const isInBound = (matrix, row, col) => {
-    const rowBoundLength = matrix.length;
-    const colBoundLength = matrix[0].length;
+    const numRows = matrix.length;
+    const numCols = matrix[0].length;
 
-    const isInRowBound = row >= 0 && row < rowBoundLength;
-    const isInColBound = col >= 0 && col < colBoundLength;
+    const isInRowBound = row >= 0 && row < numRows;
+    const isInColBound = col >= 0 && col < numCols;
 
     return isInRowBound && isInColBound;
 };
@@ -47,20 +47,20 @@ const getNeighbors = (matrix, row, col) => {
     return neighbors;
 };
 
-const getLocationString = (gateLocation) => {
+const getGateLocationString = (gateLocation) => {
     const { row, col } = gateLocation;
 
     return `${row}, ${col}`;
 };
 
-const getLocations = (matrix) => {
+const getGateLocations = (matrix) => {
     const array = [];
 
-    const rowLength = matrix.length;
-    const colLength = matrix[0].length;
+    const numRows = matrix.length;
+    const numCols = matrix[0].length;
 
-    for (let row = 0; row < rowLength; row++) {
-        for (let col = 0; col < colLength; col++) {
+    for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < numCols; col++) {
             if (matrix[row][col] === GATE) {
                 array.push({ row, col });
             }
@@ -74,10 +74,10 @@ const getDistanceToNearestGate = (rooms) => {
     const queue = new Queue();
     const visited = new Set();
 
-    const gateLocations = getLocations(rooms);
+    const gateLocations = getGateLocations(rooms);
 
     for (const gateLocation of gateLocations) {
-        const gateLocationString = getLocationString(gateLocation);
+        const gateLocationString = getGateLocationString(gateLocation);
 
         visited.add(gateLocationString);
 
@@ -92,7 +92,7 @@ const getDistanceToNearestGate = (rooms) => {
 
         const neighbors = getNeighbors(rooms, row, col);
         for (const neighbor of neighbors) {
-            const neighborLocationsString = getLocationString(neighbor);
+            const neighborLocationsString = getGateLocationString(neighbor);
 
             if (visited.has(neighborLocationsString)) continue;
             visited.add(neighborLocationsString);
