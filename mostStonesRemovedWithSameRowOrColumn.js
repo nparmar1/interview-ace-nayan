@@ -76,16 +76,16 @@ const getComponentSize = (nodeCoordinates, visited, graph) => {
         // Process node
         componentSize++;
 
-        const childCoordinateString = getCoordinateString(x, y);
-        const children = graph[childCoordinateString];
-        for (const child of children) {
-            const [childX, childY] = child;
+        const neighborCoordinateString = getCoordinateString(x, y);
+        const neighbors = graph[neighborCoordinateString];
+        for (const neighbor of neighbors) {
+            const [neighborX, neighborY] = neighbor;
 
-            const childCoordinate = getCoordinateString(childX, childY);
-            if (visited.has(childCoordinate)) continue;
+            const neighborCoordinate = getCoordinateString(neighborX, neighborY);
+            if (visited.has(neighborCoordinate)) continue;
 
-            visited.add(childCoordinate);
-            queue.enqueue(child);
+            visited.add(neighborCoordinate);
+            queue.enqueue(neighbor);
         }
     }
     return componentSize;
