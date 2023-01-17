@@ -24,34 +24,32 @@ const directions = [
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isInBound = (row, col, grid) => {
-    const rowBoundLength = grid.length;
-    const colBoundLength = grid[0].length;
+const isBound = (row, col, grid) => {
+    const numRows = grid.length;
+    const numCols = grid[0].length;
 
-    const isInRowBound = row >= 0 && row < rowBoundLength;
-    const isInColBound = col >= 0 && col < colBoundLength;
+    const isInRowBound = row >= 0 && row < numRows;
+    const isInColBound = col >= 0 && col < numCols;
 
     return isInRowBound && isInColBound;
 };
 
-const getChildren = (row, col, grid) => {
-    const children = [];
+const getNeighbors = (row, col, grid) => {
+    const potentialNeighbors = [];
 
     for (const direction of directions) {
-        const [rowDir, colDir] = direction;
+        const [rowChange, colChange] = direction;
 
-        const newRow = row + rowDir;
-        const newCol = col + colDir;
+        const newRow = row + rowChange;
+        const newCol = col + colChange;
 
-        const isBound = isInBound(newRow, newCol, grid);
-
-        if (!isBound) continue;
+        if (!isBound(newRow, newCol, grid)) continue;
         if (grid[newRow][newCol] === WATER) continue;
 
-        children.push([newRow, newCol]);
+        potentialNeighbors.push([newRow, newCol]);
     }
 
-    return children;
+    return potentialNeighbors;
 };
 
 const markAsVisited = (row, col, grid, visited) => {
@@ -66,15 +64,15 @@ const markAsVisited = (row, col, grid, visited) => {
 
         // Process node
 
-        const children = getChildren(row, col, grid);
-        for (const child of children) {
-            const [rowChild, rowCol] = child;
-            const childRowColString = getRowColString(rowChild, rowCol);
+        const neighbors = getNeighbors(row, col, grid);
+        for (const neighbor of neighbors) {
+            const [neighborRow, neighborCol] = neighbor;
+            const neighborRowColString = getRowColString(neighborRow, neighborCol);
 
-            if (visited.has(childRowColString)) continue;
+            if (visited.has(neighborRowColString)) continue;
 
-            visited.add(childRowColString);
-            queue.enqueue([rowChild, rowCol]);
+            visited.add(neighborRowColString);
+            queue.enqueue([neighborRow, neighborCol]);
         }
     }
 };
@@ -83,11 +81,11 @@ const getNumIslands = (grid) => {
     const visited = new Set();
     let numberOfIslands = 0;
 
-    const rowLength = grid.length;
-    const colLength = grid[0].length;
+    const numRows = grid.length;
+    const numCols = grid[0].length;
 
-    for (let row = 0; row < rowLength; row++) {
-        for (let col = 0; col < colLength; col++) {
+    for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < numCols; col++) {
             const rowColString = getRowColString(row, col);
             const isWater = grid[row][col] === WATER;
 

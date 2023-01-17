@@ -18,34 +18,32 @@ const directions = [
     [1, 0],
 ];
 
-const isInBoundWithGrid = (grid, newRow, newCol) => {
-    const rowBoundLength = grid.length;
-    const colBoundLength = grid[0].length;
+const isInBound = (grid, newRow, newCol) => {
+    const numRows = grid.length;
+    const numCols = grid[0].length;
 
-    const isInRowBound = newRow >= 0 && newRow < rowBoundLength;
-    const isInColBound = newCol >= 0 && newCol < colBoundLength;
+    const isInRowBound = newRow >= 0 && newRow < numRows;
+    const isInColBound = newCol >= 0 && newCol < numCols;
 
     return isInRowBound && isInColBound;
 };
 
-const getChildren = (grid, row, col, startColor) => {
-    const children = [];
+const getNeighbors = (grid, row, col, colorToReplace) => {
+    const potentialNeighbors = [];
 
     for (const direction of directions) {
-        const [rowDir, ColDir] = direction;
+        const [rowChange, ColChange] = direction;
 
-        const newRow = row + rowDir;
-        const newCol = col + ColDir;
+        const newRow = row + rowChange;
+        const newCol = col + ColChange;
 
-        const isInBound = isInBoundWithGrid(grid, newRow, newCol);
+        if (!isInBound(grid, newRow, newCol)) continue;
+        if (grid[newRow][newCol] !== colorToReplace) continue;
 
-        if (!isInBound) continue;
-        if (grid[newRow][newCol] !== startColor) continue;
-
-        children.push([newRow, newCol]);
+        potentialNeighbors.push([newRow, newCol]);
     }
 
-    return children;
+    return potentialNeighbors;
 };
 
 const getRowColString = (row, col) => `${row}, ${col}`;
@@ -66,15 +64,15 @@ const getFloodFillImage = (image, startRow, startCol, color) => {
         // Process node]
         image[row][col] = color;
 
-        const children = getChildren(image, row, col, startColor);
-        for (const child of children) {
-            const [childRow, childCol] = child;
+        const neighbors = getNeighbors(image, row, col, startColor);
+        for (const neighbor of neighbors) {
+            const [neighborRow, neighborCol] = neighbor;
 
-            const childRowColString = getRowColString(childRow, childCol);
-            if (visited.has(childRowColString)) continue;
+            const neighborRowColString = getRowColString(neighborRow, neighborCol);
+            if (visited.has(neighborRowColString)) continue;
 
-            visited.add(childRowColString);
-            queue.enqueue([childRow, childCol]);
+            visited.add(neighborRowColString);
+            queue.enqueue([neighborRow, neighborCol]);
         }
     }
 
