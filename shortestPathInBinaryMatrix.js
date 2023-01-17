@@ -32,12 +32,12 @@ const directions = [
     [1, 1],
 ];
 
-const isInBounds = (grid, newRow, newCol) => {
-    const rowBoundLength = grid.length;
-    const colBoundLength = grid[0].length;
+const isBounds = (grid, newRow, newCol) => {
+    const numRows = grid.length;
+    const numCol = grid[0].length;
 
-    const isInRowBound = newRow >= 0 && newRow < rowBoundLength;
-    const isInColBound = newCol >= 0 && newCol < colBoundLength;
+    const isInRowBound = newRow >= 0 && newRow < numRows;
+    const isInColBound = newCol >= 0 && newCol < numCol;
 
     return isInRowBound && isInColBound;
 };
@@ -51,9 +51,9 @@ const getNeighbors = (grid, row, col) => {
         const newRow = row + rowDir;
         const newCol = col + colDir;
 
-        const isInBound = isInBounds(grid, newRow, newCol);
+        isBounds(grid, newRow, newCol);
 
-        if (!isInBound || grid[newRow][newCol] !== CLEAR) continue;
+        if (!isBounds(grid, newRow, newCol) || grid[newRow][newCol] !== CLEAR) continue;
         neighbors.push({ row: newRow, col: newCol });
     }
 
@@ -65,7 +65,7 @@ const getRowColString = (row, col) => `${row}, ${col}`;
 const getShortestPathBinaryMatrix = (grid) => {
     if (grid[0].length === 0) return [];
 
-    if (grid[0][0] !== PATH || grid[grid.length - 1][grid[0].length - 1] !== PATH) {
+    if (grid[0][0] !== CLEAR || grid[grid.length - 1][grid[0].length - 1] !== CLEAR) {
         return NO_CLEAR_PATH;
     }
 
