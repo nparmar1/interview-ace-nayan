@@ -31,33 +31,32 @@ const WATER = 0;
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isInBound = (newRow, newCol, grid) => {
-    const rowBoundLength = grid.length;
-    const colBoundLength = grid[0].length;
+const isBound = (newRow, newCol, grid) => {
+    const numRow = grid.length;
+    const numCol = grid[0].length;
 
-    const isRowInBound = newRow >= 0 && newRow < rowBoundLength;
-    const isColInBound = newCol >= 0 && newCol < colBoundLength;
+    const isRowInBound = newRow >= 0 && newRow < numRow;
+    const isColInBound = newCol >= 0 && newCol < numCol;
 
     return isRowInBound && isColInBound;
 };
 
-const getChildren = (row, col, grid) => {
-    const children = [];
+const getNeighbors = (row, col, grid) => {
+    const potentialNeighbors = [];
 
     for (const direction of directions) {
-        const [rowDir, colDir] = direction;
+        const [rowChange, colChange] = direction;
 
-        const newRow = row + rowDir;
-        const newCol = col + colDir;
+        const newRow = row + rowChange;
+        const newCol = col + colChange;
 
-        const isBound = isInBound(newRow, newCol, grid);
-        if (!isBound) continue;
+        if (!isBound(newRow, newCol, grid)) continue;
 
         if (grid[newRow][newCol] === WATER) continue;
 
-        children.push([newRow, newCol]);
+        potentialNeighbors.push([newRow, newCol]);
     }
-    return children;
+    return potentialNeighbors;
 };
 
 const getIslandAreaNumber = (row, col, grid, visited) => {
@@ -74,15 +73,15 @@ const getIslandAreaNumber = (row, col, grid, visited) => {
         // Process node
         areaOfIslandNumber++;
 
-        const children = getChildren(row, col, grid);
-        for (const child of children) {
-            const [rowChild, colChild] = child;
+        const neighbors = getNeighbors(row, col, grid);
+        for (const neighbor of neighbors) {
+            const [rowNeighbor, colNeighbor] = neighbor;
 
-            const childRowColString = getRowColString(rowChild, colChild);
-            if (visited.has(childRowColString)) continue;
+            const neighborRowColString = getRowColString(rowNeighbor, colNeighbor);
+            if (visited.has(neighborRowColString)) continue;
 
-            if (visited.add(childRowColString));
-            queue.enqueue([rowChild, colChild]);
+            if (visited.add(neighborRowColString));
+            queue.enqueue([rowNeighbor, colNeighbor]);
         }
     }
     return areaOfIslandNumber;
@@ -93,13 +92,13 @@ const getMaxAreaOfIsland = (grid) => {
     const visited = new Set();
     let maxAreaNumber = 0;
 
-    const rowLength = grid.length;
-    const colLength = grid[0].length;
+    const numRow = grid.length;
+    const numCol = grid[0].length;
 
-    for (let row = 0; row < rowLength; row++) {
-        for (let col = 0; col < colLength; col++) {
-            const isIsland = grid[row][col] !== ISLAND;
-            if (isIsland) continue;
+    for (let row = 0; row < numRow; row++) {
+        for (let col = 0; col < numCol; col++) {
+            const isIsland = grid[row][col] === ISLAND;
+            if (!isIsland) continue;
 
             const rowColString = getRowColString(row, col);
             if (visited.has(rowColString)) continue;
