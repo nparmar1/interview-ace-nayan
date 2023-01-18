@@ -32,10 +32,10 @@ const getNeighbors = (grid, row, col, colorToReplace) => {
     const potentialNeighbors = [];
 
     for (const direction of directions) {
-        const [rowChange, ColChange] = direction;
+        const [rowChange, colChange] = direction;
 
         const newRow = row + rowChange;
-        const newCol = col + ColChange;
+        const newCol = col + colChange;
 
         if (!isInBound(grid, newRow, newCol)) continue;
         if (grid[newRow][newCol] !== colorToReplace) continue;
@@ -48,7 +48,7 @@ const getNeighbors = (grid, row, col, colorToReplace) => {
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const getFloodFillImage = (image, startRow, startCol, color) => {
+const getFloodFillImage = (image, startRow, startCol, replacementColor) => {
     const queue = new Queue();
     const visited = new Set();
     const startColor = image[startRow][startCol];
@@ -62,7 +62,7 @@ const getFloodFillImage = (image, startRow, startCol, color) => {
         const [row, col] = queue.dequeue();
 
         // Process node]
-        image[row][col] = color;
+        image[row][col] = replacementColor;
 
         const neighbors = getNeighbors(image, row, col, startColor);
         for (const neighbor of neighbors) {

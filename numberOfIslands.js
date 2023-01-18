@@ -52,7 +52,7 @@ const getNeighbors = (row, col, grid) => {
     return potentialNeighbors;
 };
 
-const markAsVisited = (row, col, grid, visited) => {
+const markIslandAsVisited = (row, col, grid, visited) => {
     const queue = new Queue();
     const rowColString = getRowColString(row, col);
 
@@ -93,7 +93,7 @@ const getNumIslands = (grid) => {
             if (isWater) continue;
 
             numberOfIslands++;
-            markAsVisited(row, col, grid, visited);
+            markIslandAsVisited(row, col, grid, visited);
         }
     }
 
