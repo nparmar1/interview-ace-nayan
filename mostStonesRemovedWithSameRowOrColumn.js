@@ -22,11 +22,11 @@ const Y_IDX = 1;
 
 const getCoordinateString = (x, y) => `${x}, ${y}`;
 
-const getGroupedCoordinates = (nodeCoordinates, IDX) => {
+const getGroupedCoordinates = (nodeCoordinates, idx) => {
     const groupedCoordinates = {};
 
     for (const nodeCoordinate of nodeCoordinates) {
-        const value = nodeCoordinate[IDX];
+        const value = nodeCoordinate[idx];
 
         const hasValue = groupedCoordinates.hasOwnProperty(value);
         if (!hasValue) groupedCoordinates[value] = [];
