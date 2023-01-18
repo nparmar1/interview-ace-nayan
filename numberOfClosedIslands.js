@@ -25,7 +25,7 @@ const WATER = 1;
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isBound = (newRow, newCol, grid) => {
+const isWithinBounds = (newRow, newCol, grid) => {
     const numRow = grid.length;
     const numCol = grid[0].length;
 
@@ -62,7 +62,7 @@ const getClosedIsland = (row, col, grid, visited) => {
         const [row, col] = queue.dequeue();
 
         // Process node
-        if (!isBound(row, col, grid)) {
+        if (!isWithinBounds(row, col, grid)) {
             isClosedIsland = false;
             continue;
         }

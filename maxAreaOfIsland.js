@@ -31,7 +31,7 @@ const WATER = 0;
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isBound = (newRow, newCol, grid) => {
+const isWithinBounds = (newRow, newCol, grid) => {
     const numRow = grid.length;
     const numCol = grid[0].length;
 
@@ -50,7 +50,7 @@ const getNeighbors = (row, col, grid) => {
         const newRow = row + rowChange;
         const newCol = col + colChange;
 
-        if (!isBound(newRow, newCol, grid)) continue;
+        if (!isWithinBounds(newRow, newCol, grid)) continue;
 
         if (grid[newRow][newCol] === WATER) continue;
 
@@ -59,19 +59,19 @@ const getNeighbors = (row, col, grid) => {
     return potentialNeighbors;
 };
 
-const getIslandAreaNumber = (row, col, grid, visited) => {
+const getIslandArea = (row, col, grid, visited) => {
     const queue = new Queue();
     const rowColString = getRowColString(row, col);
 
     visited.add(rowColString);
     queue.enqueue([row, col]);
 
-    let areaOfIslandNumber = 0;
+    let getIslandArea = 0;
     while (queue.size() > 0) {
         const [row, col] = queue.dequeue();
 
         // Process node
-        areaOfIslandNumber++;
+        getIslandArea++;
 
         const neighbors = getNeighbors(row, col, grid);
         for (const neighbor of neighbors) {
@@ -84,31 +84,31 @@ const getIslandAreaNumber = (row, col, grid, visited) => {
             queue.enqueue([rowNeighbor, colNeighbor]);
         }
     }
-    return areaOfIslandNumber;
+    return getIslandArea;
 };
 
 const getMaxAreaOfIsland = (grid) => {
     if (grid.length === 0) return 0;
     const visited = new Set();
-    let maxAreaNumber = 0;
+    let maxIslandArea = 0;
 
-    const numRow = grid.length;
-    const numCol = grid[0].length;
+    const numRows = grid.length;
+    const numCols = grid[0].length;
 
-    for (let row = 0; row < numRow; row++) {
-        for (let col = 0; col < numCol; col++) {
+    for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < numCols; col++) {
             const isIsland = grid[row][col] === ISLAND;
             if (!isIsland) continue;
 
             const rowColString = getRowColString(row, col);
             if (visited.has(rowColString)) continue;
 
-            const currentMaxAreaNumber = getIslandAreaNumber(row, col, grid, visited);
-            if (currentMaxAreaNumber > maxAreaNumber) maxAreaNumber = currentMaxAreaNumber;
+            const curIslandArea = getIslandArea(row, col, grid, visited);
+            if (curIslandArea > maxIslandArea) maxIslandArea = curIslandArea;
         }
     }
 
-    return maxAreaNumber;
+    return maxIslandArea;
 };
 
 const grid = [
