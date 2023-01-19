@@ -31,12 +31,12 @@ const WATER = 0;
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isWithinBounds = (newRow, newCol, grid) => {
+const isWithinBounds = (row, col, grid) => {
     const numRow = grid.length;
     const numCol = grid[0].length;
 
-    const isRowInBound = newRow >= 0 && newRow < numRow;
-    const isColInBound = newCol >= 0 && newCol < numCol;
+    const isRowInBound = row >= 0 && row < numRow;
+    const isColInBound = col >= 0 && col < numCol;
 
     return isRowInBound && isColInBound;
 };
@@ -80,7 +80,7 @@ const getIslandArea = (row, col, grid, visited) => {
             const neighborRowColString = getRowColString(rowNeighbor, colNeighbor);
             if (visited.has(neighborRowColString)) continue;
 
-            if (visited.add(neighborRowColString));
+            visited.add(neighborRowColString);
             queue.enqueue([rowNeighbor, colNeighbor]);
         }
     }

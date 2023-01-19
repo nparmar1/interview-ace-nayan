@@ -25,12 +25,12 @@ const WATER = 1;
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isWithinBounds = (newRow, newCol, grid) => {
+const isWithinBounds = (row, col, grid) => {
     const numRow = grid.length;
     const numCol = grid[0].length;
 
-    const isRowInBound = newRow >= 0 && newRow < numRow;
-    const isColInBound = newCol >= 0 && newCol < numCol;
+    const isRowInBound = row >= 0 && row < numRow;
+    const isColInBound = col >= 0 && col < numCol;
 
     return isRowInBound && isColInBound;
 };
