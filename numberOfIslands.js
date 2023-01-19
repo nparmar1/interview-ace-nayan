@@ -24,7 +24,7 @@ const directions = [
 
 const getRowColString = (row, col) => `${row}, ${col}`;
 
-const isBound = (row, col, grid) => {
+const isInBound = (row, col, grid) => {
     const numRows = grid.length;
     const numCols = grid[0].length;
 
@@ -43,7 +43,7 @@ const getNeighbors = (row, col, grid) => {
         const newRow = row + rowChange;
         const newCol = col + colChange;
 
-        if (!isBound(newRow, newCol, grid)) continue;
+        if (!isInBound(newRow, newCol, grid)) continue;
         if (grid[newRow][newCol] === WATER) continue;
 
         potentialNeighbors.push([newRow, newCol]);

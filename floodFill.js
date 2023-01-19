@@ -18,12 +18,12 @@ const directions = [
     [1, 0],
 ];
 
-const isInBound = (grid, newRow, newCol) => {
+const isInBound = (grid, row, col) => {
     const numRows = grid.length;
     const numCols = grid[0].length;
 
-    const isInRowBound = newRow >= 0 && newRow < numRows;
-    const isInColBound = newCol >= 0 && newCol < numCols;
+    const isInRowBound = row >= 0 && row < numRows;
+    const isInColBound = col >= 0 && col < numCols;
 
     return isInRowBound && isInColBound;
 };
