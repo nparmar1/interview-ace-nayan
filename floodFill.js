@@ -18,7 +18,7 @@ const directions = [
     [1, 0],
 ];
 
-const isInBound = (grid, row, col) => {
+const isWithinBounds = (grid, row, col) => {
     const numRows = grid.length;
     const numCols = grid[0].length;
 
@@ -37,7 +37,7 @@ const getNeighbors = (grid, row, col, colorToReplace) => {
         const newRow = row + rowChange;
         const newCol = col + colChange;
 
-        if (!isInBound(grid, newRow, newCol)) continue;
+        if (!isWithinBounds(grid, newRow, newCol)) continue;
         if (grid[newRow][newCol] !== colorToReplace) continue;
 
         potentialNeighbors.push([newRow, newCol]);
