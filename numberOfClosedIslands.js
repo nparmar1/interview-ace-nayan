@@ -93,8 +93,6 @@ const getNumberOfclosedIslands = (grid) => {
 
     for (let row = 0; row < numRow; row++) {
         for (let col = 0; col < numCol; col++) {
-            const isWater = grid[row][col] === WATER;
-            if (isWater) continue;
 
             const rowColString = getRowColString(row, col);
             if (visited.has(rowColString)) continue;

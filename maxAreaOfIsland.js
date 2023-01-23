@@ -66,12 +66,12 @@ const getIslandArea = (row, col, grid, visited) => {
     visited.add(rowColString);
     queue.enqueue([row, col]);
 
-    let getIslandArea = 0;
+    let islandArea = 0;
     while (queue.size() > 0) {
         const [row, col] = queue.dequeue();
 
         // Process node
-        getIslandArea++;
+        islandArea++;
 
         const neighbors = getNeighbors(row, col, grid);
         for (const neighbor of neighbors) {
@@ -84,7 +84,7 @@ const getIslandArea = (row, col, grid, visited) => {
             queue.enqueue([rowNeighbor, colNeighbor]);
         }
     }
-    return getIslandArea;
+    return islandArea;
 };
 
 const getMaxAreaOfIsland = (grid) => {
@@ -97,14 +97,14 @@ const getMaxAreaOfIsland = (grid) => {
 
     for (let row = 0; row < numRows; row++) {
         for (let col = 0; col < numCols; col++) {
-            const isIsland = grid[row][col] === ISLAND;
-            if (!isIsland) continue;
+            
+            if (grid[row][col] !== ISLAND) continue;
 
             const rowColString = getRowColString(row, col);
             if (visited.has(rowColString)) continue;
 
             const curIslandArea = getIslandArea(row, col, grid, visited);
-            if (curIslandArea > maxIslandArea) maxIslandArea = curIslandArea;
+            maxIslandArea = Math.max(maxIslandArea, curIslandArea);
         }
     }
 
