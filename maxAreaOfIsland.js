@@ -59,12 +59,12 @@ const getNeighbors = (row, col, grid) => {
     return potentialNeighbors;
 };
 
-const getIslandArea = (row, col, grid, visited) => {
+const getIslandArea = (startRow, startCol, grid, visited) => {
     const queue = new Queue();
-    const rowColString = getRowColString(row, col);
+    const rowColString = getRowColString(startRow, startCol);
 
     visited.add(rowColString);
-    queue.enqueue([row, col]);
+    queue.enqueue([startRow, startCol]);
 
     let islandArea = 0;
     while (queue.size() > 0) {
