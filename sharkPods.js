@@ -48,14 +48,14 @@ const getGraph = (nodes) => {
         }
     }
 
-    console.log(graph);
+    return graph;
 };
 
-const markedComponentAsVisited = (node, visited, graph) => {
+const markComponentAsVisited = (startNode, visited, graph) => {
     const queue = new Queue();
-    visited.add(node);
+    visited.add(startNode);
 
-    queue.enqueue(node);
+    queue.enqueue(startNode);
 
     while (queue.size() > 0) {
         // Remove node
@@ -86,7 +86,7 @@ const countSharkPods = (sharks) => {
         if (visitedShark.has(shark)) continue;
 
         numSharkPods++;
-        markedComponentAsVisited(shark, visitedShark, graph);
+        markComponentAsVisited(shark, visitedShark, graph);
     }
 
     return numSharkPods;
