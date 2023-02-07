@@ -47,7 +47,7 @@ const buildGraph = (nodes) => {
     return graph;
 };
 
-const isComponent = (startNode, graph, visited) => {
+const markComponentAsVisited = (startNode, graph, visited) => {
     const queue = new Queue();
     visited.add(startNode);
 
@@ -78,7 +78,7 @@ const checkIfIsGroupOfWarringBishops = (bishops) => {
     const graph = buildGraph(bishops);
     const startBishop = bishops[0];
 
-    isComponent(startBishop, graph, visitedBishop);
+    markComponentAsVisited(startBishop, graph, visitedBishop);
 
     return visitedBishop.size === bishops.length;
 };

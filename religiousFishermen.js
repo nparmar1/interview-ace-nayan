@@ -26,10 +26,10 @@ const buildGraph = (nodes) => {
 
     for (let i = 0; i < numNodes; i++) {
         for (let j = i + 1; j < numNodes; j++) {
-            const nodeOne = nodes[i];
-            const nodeTwo = nodes[j];
+            const nodeOne = i;
+            const nodeTwo = j;
 
-            if (!areConnected(nodeOne, nodeTwo)) continue;
+            if (!areConnected(nodes[nodeOne], nodes[nodeTwo])) continue;
 
             const containsNodeOne = graph.hasOwnProperty(nodeOne);
             const containsNodeTwo = graph.hasOwnProperty(nodeTwo);
@@ -74,14 +74,15 @@ const getNumOfNodes = (node, visited, graph) => {
 };
 
 const findLargestSquadSize = (fishermen) => {
+    const numFishermen = fishermen.length;
     const visitedFisherman = new Set();
     const graph = buildGraph(fishermen);
     let numSquadFishermen = 0;
 
-    for (const fisherman of fishermen) {
-        if (visitedFisherman.has(fisherman)) continue;
+    for (let fishermanId = 0; fishermanId < numFishermen; fishermanId++) {
+        if (visitedFisherman.has(fishermanId)) continue;
 
-        const currentNumSquadFishermen = getNumOfNodes(fisherman, visitedFisherman, graph);
+        const currentNumSquadFishermen = getNumOfNodes(fishermanId, visitedFisherman, graph);
         numSquadFishermen = Math.max(numSquadFishermen, currentNumSquadFishermen);
     }
     return numSquadFishermen;
