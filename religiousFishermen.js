@@ -10,7 +10,7 @@ You must return the size of the largest squad of fishermen.
 
 const { Queue } = require('./utils/queue');
 
-const areConnected = (fishermanOne, fishermanTwo) => {
+const areFishermenWorkingTogether = (fishermanOne, fishermanTwo) => {
     const [fishermanOneReligion, fishermanOneFishingRod] = fishermanOne;
     const [fishermanTwoReligion, fishermanTwoFishingRod] = fishermanTwo;
 
@@ -29,7 +29,7 @@ const buildGraph = (nodes) => {
             const nodeOne = i;
             const nodeTwo = j;
 
-            if (!areConnected(nodes[nodeOne], nodes[nodeTwo])) continue;
+            if (!areFishermenWorkingTogether(nodes[nodeOne], nodes[nodeTwo])) continue;
 
             const containsNodeOne = graph.hasOwnProperty(nodeOne);
             const containsNodeTwo = graph.hasOwnProperty(nodeTwo);

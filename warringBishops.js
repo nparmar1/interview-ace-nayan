@@ -13,14 +13,15 @@ Given the input list of bishops, return true if all the bishops are part of the 
 */
 
 const { Queue } = require('./utils/queue');
+const FIRST_INDEX = 0;
 
 const areWarring = (bishopOne, bishopTwo) => {
     const [bishopOneRow, bishopOneCol] = bishopOne;
     const [bishopTwoRow, bishopTwoCol] = bishopTwo;
 
-    const slope = Math.abs((bishopTwoCol - bishopOneCol) / (bishopTwoRow - bishopOneRow));
+    const slope = (bishopTwoRow - bishopOneRow) / (bishopTwoCol - bishopOneCol);
 
-    return slope === 1;
+    return slope === 1 || slope === -1;
 };
 
 const buildGraph = (nodes) => {
@@ -29,10 +30,10 @@ const buildGraph = (nodes) => {
 
     for (let i = 0; i < numNodes; i++) {
         for (let j = i + 1; j < numNodes; j++) {
-            const nodeOne = nodes[i];
-            const nodeTwo = nodes[j];
+            const nodeOne = i;
+            const nodeTwo = j;
 
-            if (!areWarring(nodeOne, nodeTwo)) continue;
+            if (!areWarring(nodes[nodeOne], nodes[nodeTwo])) continue;
 
             const containsNodeOne = graph.hasOwnProperty(nodeOne);
             const containsNodeTwo = graph.hasOwnProperty(nodeTwo);
@@ -74,11 +75,11 @@ const markComponentAsVisited = (startNode, graph, visited) => {
 };
 
 const checkIfIsGroupOfWarringBishops = (bishops) => {
+    if (bishops.length === 0) return true;
     const visitedBishop = new Set();
     const graph = buildGraph(bishops);
-    const startBishop = bishops[0];
 
-    markComponentAsVisited(startBishop, graph, visitedBishop);
+    markComponentAsVisited(FIRST_INDEX, graph, visitedBishop);
 
     return visitedBishop.size === bishops.length;
 };
