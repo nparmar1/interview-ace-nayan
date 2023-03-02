@@ -10,78 +10,59 @@ return the number of words in the shortest transformation sequence from beginWor
 
 const { Queue } = require('./utils/queue');
 
-const NO_SEQUENCE_FOUND = 0;
-const getASCII = (char) => char.charCodeAt();
-const getChar = (asciiVal) => String.fromCharCode(asciiVal);
+const NO_SEQUENCE_EXIST = 0;
+const UTF_16_LOWER_CASE_A = 97;
+const NUMBER_OF_ALPHABETS = 26;
 
-const getAllValidCharacterInsertions = (beginning, ending, validWords) => {
-    const allCharacterInsertions = [];
+const getNeighbors = (word, wordListSet) => {
+    const neighbors = [];
+    const wordLength = word.length;
 
-    for (let num = getASCII('a'); num <= getASCII('z'); num++) {
-        const newChar = getChar(num);
-        const newString = beginning + newChar + ending;
+    for (let i = 0; i < wordLength; i++) {
+        for (let j = 0; j < NUMBER_OF_ALPHABETS; j++) {
+            const sliceWordBeforeI = word.slice(0, i);
+            const sliceWordAfterI = word.slice(i + 1);
+            const currentLetter = String.fromCharCode(UTF_16_LOWER_CASE_A + j);
 
-        if (!validWords.has(newString)) continue;
+            const potentialWord = sliceWordBeforeI + currentLetter + sliceWordAfterI;
 
-        allCharacterInsertions.push(newString);
-    }
+            if (!wordListSet.has(potentialWord)) continue;
 
-    return allCharacterInsertions;
-};
-
-const getValidOneDiffWords = (word, validWords) => {
-    const validOneDiffWords = [];
-    const numWords = word.length;
-
-    for (let i = 0; i < numWords; i++) {
-        const beginning = word.substring(0, i);
-        const ending = word.substring(i + 1);
-
-        const allCharacterInsertions = getAllValidCharacterInsertions(
-            beginning,
-            ending,
-            validWords,
-        );
-        allCharacterInsertions.forEach((newString) => validOneDiffWords.push(newString));
-    }
-
-    return validOneDiffWords;
-};
-
-const getLadderLength = (beginWord, endWord, wordList) => {
-    const validWords = new Set(wordList);
-    if (!validWords.has(endWord)) return NO_SEQUENCE_FOUND;
-
-    const visited = new Set();
-    const queue = new Queue();
-
-    visited.add(beginWord);
-    queue.enqueue({
-        word: beginWord,
-        sequenceLengthSoFar: 1,
-    });
-
-    while (queue.size() > 0) {
-        // Remove node
-        const { word, sequenceLengthSoFar } = queue.dequeue();
-
-        // Process node
-        if (word === endWord) return sequenceLengthSoFar;
-
-        // Get neighbors
-        const oneDiffWords = getValidOneDiffWords(word, validWords);
-        for (const newWord of oneDiffWords) {
-            if (visited.has(newWord)) continue;
-
-            visited.add(newWord);
-            queue.enqueue({
-                word: newWord,
-                sequenceLengthSoFar: sequenceLengthSoFar + 1,
-            });
+            neighbors.push(potentialWord);
         }
     }
 
-    return NO_SEQUENCE_FOUND;
+    return neighbors;
+};
+
+const getLadderLength = (beginWord, endWord, wordList) => {
+    const wordListSet = new Set(wordList);
+    const visitedWord = new Set();
+    const queue = new Queue();
+
+    if (wordListSet.has(beginWord)) return NO_SEQUENCE_EXIST;
+
+    visitedWord.add(beginWord);
+    queue.enqueue({ word: beginWord, sequenceSoFar: 1 });
+
+    while (queue.size() > 0) {
+        // Remove word
+        const { word, sequenceSoFar } = queue.dequeue();
+
+        // Process word
+        if (word === endWord) return sequenceSoFar;
+
+        // Get neighbors
+        const neighbors = getNeighbors(word, wordListSet);
+        for (const neighbor of neighbors) {
+            if (visitedWord.has(neighbor)) continue;
+
+            visitedWord.add(neighbor);
+            queue.enqueue({ word: neighbor, sequenceSoFar: sequenceSoFar + 1 });
+        }
+    }
+
+    return NO_SEQUENCE_EXIST;
 };
 
 const beginWord = 'hit';

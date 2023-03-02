@@ -10,12 +10,12 @@ Return the size of the largest group of puddles that our frog can freely jump be
 
 const { Queue } = require('./utils/queue');
 
-const getDistance = (nodeOne, nodeTwo) => {
-    const [nodeOneXcoordinate, nodeOneYcoordinate] = nodeOne;
-    const [nodeTwoXcoordinate, nodeTwoYcoordinate] = nodeTwo;
+const getDistance = (coordinateOne, coordinateTwo) => {
+    const [xCoordinateOne, yCoordinateOne] = coordinateOne;
+    const [xCoordinateTwo, yCoordinateTwo] = coordinateTwo;
 
-    const xDistance = nodeTwoXcoordinate - nodeOneXcoordinate;
-    const yDistance = nodeTwoYcoordinate - nodeOneYcoordinate;
+    const xDistance = xCoordinateTwo - xCoordinateOne;
+    const yDistance = yCoordinateTwo - yCoordinateOne;
 
     const distanceBetweenNodes = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
 
@@ -31,8 +31,9 @@ const areConnected = (puddleOne, puddleTwo, jumpSize) => {
         [puddleTwoXcoordinate, puddleTwoYcoordinate],
     );
     const radiusSum = puddleOneRadius + puddleTwoRadius;
+    const distanceBetweenPuddles = distanceFromCenterPuddle - radiusSum;
 
-    return distanceFromCenterPuddle - radiusSum <= jumpSize;
+    return distanceBetweenPuddles <= jumpSize;
 };
 
 const buildGraph = (nodes, jumpSize) => {
@@ -41,10 +42,10 @@ const buildGraph = (nodes, jumpSize) => {
 
     for (let i = 0; i < numNodes; i++) {
         for (let j = i + 1; j < numNodes; j++) {
-            const nodeOne = nodes[i];
-            const nodeTwo = nodes[j];
+            const nodeOne = i;
+            const nodeTwo = j;
 
-            if (!areConnected(nodeOne, nodeTwo, jumpSize)) continue;
+            if (!areConnected(nodes[nodeOne], nodes[nodeTwo], jumpSize)) continue;
 
             const containsNodeOne = graph.hasOwnProperty(nodeOne);
             const containsNodeTwo = graph.hasOwnProperty(nodeTwo);
@@ -92,9 +93,11 @@ const getComponentSize = (startNode, graph, visited) => {
 const getLargestPuddleGroupSize = (puddles, jumpSize) => {
     const visitedPuddle = new Set();
     const graph = buildGraph(puddles, jumpSize);
+    const numPuddles = puddles.length;
     let puddleSize = 0;
 
-    for (const puddle of puddles) {
+    for (let i = 0; i < numPuddles; i++) {
+        const puddle = i;
         if (visitedPuddle.has(puddle)) continue;
 
         const currentPuddleSize = getComponentSize(puddle, graph, visitedPuddle);
