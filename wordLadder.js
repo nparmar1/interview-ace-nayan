@@ -11,20 +11,22 @@ return the number of words in the shortest transformation sequence from beginWor
 const { Queue } = require('./utils/queue');
 
 const NO_SEQUENCE_EXIST = 0;
-const UTF_16_LOWER_CASE_A = 97;
-const NUMBER_OF_ALPHABETS = 26;
+const ASCII_NUM_LOWER_CASE_A = 97;
+
+const getCharFromAscii = (asciiNum) => String.fromCharCode(asciiNum);
+const getAsciiNum = (letter) => letter.charCodeAt();
 
 const getNeighbors = (word, wordListSet) => {
     const neighbors = [];
     const wordLength = word.length;
 
     for (let i = 0; i < wordLength; i++) {
-        for (let j = 0; j < NUMBER_OF_ALPHABETS; j++) {
+        for (let asciiNum = getAsciiNum('a'); asciiNum < getAsciiNum('z'); asciiNum++) {
             const sliceWordBeforeI = word.slice(0, i);
             const sliceWordAfterI = word.slice(i + 1);
-            const currentLetter = String.fromCharCode(UTF_16_LOWER_CASE_A + j);
+            const charFromAscii = getCharFromAscii(asciiNum);
 
-            const potentialWord = sliceWordBeforeI + currentLetter + sliceWordAfterI;
+            const potentialWord = sliceWordBeforeI + charFromAscii + sliceWordAfterI;
 
             if (!wordListSet.has(potentialWord)) continue;
 

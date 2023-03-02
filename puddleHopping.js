@@ -96,8 +96,7 @@ const getLargestPuddleGroupSize = (puddles, jumpSize) => {
     const numPuddles = puddles.length;
     let puddleSize = 0;
 
-    for (let i = 0; i < numPuddles; i++) {
-        const puddle = i;
+    for (let puddle = 0; puddle < numPuddles; puddle++) {
         if (visitedPuddle.has(puddle)) continue;
 
         const currentPuddleSize = getComponentSize(puddle, graph, visitedPuddle);
