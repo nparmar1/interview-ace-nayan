@@ -40,9 +40,9 @@ const decreaseCharDown = (char) => {
     return charAsString;
 };
 
-const replaceChar = (replacementChar, IDX, combo) => {
-    const subStringBeforeI = combo.substring(0, IDX);
-    const subStrigAfterI = combo.substring(IDX + 1);
+const replaceChar = (replacementChar, index, combo) => {
+    const subStringBeforeI = combo.substring(0, index);
+    const subStrigAfterI = combo.substring(index + 1);
 
     const updatedCombo = subStringBeforeI + replacementChar + subStrigAfterI;
 
@@ -53,15 +53,14 @@ const getNeighbors = (combo) => {
     const neighbors = [];
     const comboLength = combo.length;
 
-    for (let i = 0; i < comboLength; i++) {
-        const currChar = combo[i];
-        const currIDX = i;
+    for (let currIndex = 0; currIndex < comboLength; currIndex++) {
+        const currChar = combo[currIndex];
 
         const charUp = increaseCharUp(currChar);
         const charDown = decreaseCharDown(currChar);
 
-        const upString = replaceChar(charUp, currIDX, combo);
-        const downString = replaceChar(charDown, currIDX, combo);
+        const upString = replaceChar(charUp, currIndex, combo);
+        const downString = replaceChar(charDown, currIndex, combo);
 
         neighbors.push(upString, downString);
     }

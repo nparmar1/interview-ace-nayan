@@ -16,7 +16,7 @@ Given this matrix of colors, you should return the length of the shortest sequen
 const { Queue } = require('./utils/queue');
 
 const RAINBOW = 'ROYGBIV';
-RAINBOW_NOT_FOUND = -1;
+const RAINBOW_NOT_FOUND = -1;
 
 const directions = [
     [-1, 0],
