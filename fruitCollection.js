@@ -20,28 +20,30 @@ const trees = [
 */
 
 const getDistanceBetweenNodes = (nodeOneCoordinates, nodeTwoCoordinates) => {
-    const [nodeOneXcoordinate, nodeOneYCoordinate, nodeOneFruitNum, nodeOneLengthDistance] =
-        nodeOneCoordinates;
-    const [nodeTwoXcoordinate, nodeTwoYCoordinate, nodeTwoFruitNum, nodeTwoLengthDistance] =
-        nodeTwoCoordinates;
+    const [nodeOneXcoordinate, nodeOneYCoordinate] = nodeOneCoordinates;
+    const [nodeTwoXcoordinate, nodeTwoYCoordinate] = nodeTwoCoordinates;
 
     const distance = Math.sqrt(
         Math.pow(nodeTwoXcoordinate - nodeOneXcoordinate, 2) +
             Math.pow(nodeTwoYCoordinate - nodeOneYCoordinate, 2),
     );
 
-    const smallestDistanceBetweenTwoNodes = Math.min(nodeOneLengthDistance, nodeTwoLengthDistance);
-    return distance <= smallestDistanceBetweenTwoNodes;
+    return distance;
 };
 
 const areConnected = (nodeOne, nodeTwo) => {
-    const [nodeOneXcoordinate, nodeOneYCoordinate] = nodeOne;
-    const [nodeTwoXcoordinate, nodeTwoYCoordinate] = nodeTwo;
+    const [nodeOneXcoordinate, nodeOneYCoordinate, nodeOneFruitNum, nodeOneLengthDistance] =
+        nodeOne;
+    const [nodeTwoXcoordinate, nodeTwoYCoordinate, nodeTwoFruitNum, nodeTwoLengthDistance] =
+        nodeTwo;
 
     const distanceBetweenNodes = getDistanceBetweenNodes(
         [nodeOneXcoordinate, nodeOneYCoordinate],
         [nodeTwoXcoordinate, nodeTwoYCoordinate],
     );
+
+    const smallestDistanceBetweenTwoNodes = Math.min(nodeOneLengthDistance, nodeTwoLengthDistance);
+    return distanceBetweenNodes <= smallestDistanceBetweenTwoNodes;
 };
 
 const buildGraph = (nodes) => {
@@ -49,7 +51,7 @@ const buildGraph = (nodes) => {
     const numNodes = nodes.length;
 
     for (let nodeOne = 0; nodeOne < numNodes; nodeOne++) {
-        for (let nodeTwo = nodeOne + 1; nodeTwo < numNodes; j) {
+        for (let nodeTwo = nodeOne + 1; nodeTwo < numNodes; nodeTwo++) {
             if (!areConnected(nodes[nodeOne], nodes[nodeTwo])) continue;
 
             const containsNodeOne = graph.hasOwnProperty(nodeOne);
@@ -70,7 +72,7 @@ const getComponent = (startNode, graph, visited, nodes) => {
     const queue = new Queue();
 
     visited.add(startNode);
-    queue.enqeue(startNode);
+    queue.enqueue(startNode);
 
     let numAmount = 0;
     while (queue.size() > 0) {
@@ -89,7 +91,7 @@ const getComponent = (startNode, graph, visited, nodes) => {
             if (visited.has(neighbor)) continue;
 
             visited.add(neighbor);
-            queue.enqeue(neighbor);
+            queue.enqueue(neighbor);
         }
     }
 
@@ -111,5 +113,3 @@ const getMaxFruit = (trees) => {
 
     return maxFruit;
 };
-
-getMaxFruit(trees);

@@ -28,9 +28,11 @@ const areConected = (nodeOne, nodeTwo) => {
     const differenceBetweenNodesY = Math.abs(nodeTwoY - nodeOneY);
 
     const areEqualedToSideLengthX =
-        differenceBetweenNodesX === 1 && differenceBetweenNodesY < SQUARE_SIDE_LENGTH;
+        differenceBetweenNodesX === SQUARE_SIDE_LENGTH &&
+        differenceBetweenNodesY < SQUARE_SIDE_LENGTH;
     const areEqualedToSideLengthY =
-        differenceBetweenNodesY === 1 && differenceBetweenNodesX < SQUARE_SIDE_LENGTH;
+        differenceBetweenNodesY === SQUARE_SIDE_LENGTH &&
+        differenceBetweenNodesX < SQUARE_SIDE_LENGTH;
 
     return areEqualedToSideLengthX || areEqualedToSideLengthY;
 };
@@ -91,15 +93,13 @@ const getLargestGroup = (squares) => {
     const graph = buildGraph(squares);
     const numSquares = squares.length;
     const visitedSquare = new Set();
-    let maxGroupSquares = 0;
+    let maxNumSquares = 0;
 
     for (let square = 0; square < numSquares; square++) {
         if (visitedSquare.has(square)) continue;
 
-        const currGroupSquares = getComponentSize(square, graph, visitedSquare);
-        maxGroupSquares = Math.max(maxGroupSquares, currGroupSquares);
+        const currNumSquares = getComponentSize(square, graph, visitedSquare);
+        maxNumSquares = Math.max(maxNumSquares, currNumSquares);
     }
-    return maxGroupSquares;
+    return maxNumSquares;
 };
-
-getLargestGroup(squares);
