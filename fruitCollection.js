@@ -31,19 +31,17 @@ const getDistanceBetweenNodes = (nodeOneCoordinates, nodeTwoCoordinates) => {
     return distance;
 };
 
-const areConnected = (nodeOne, nodeTwo) => {
-    const [nodeOneXcoordinate, nodeOneYCoordinate, nodeOneFruitNum, nodeOneLengthDistance] =
-        nodeOne;
-    const [nodeTwoXcoordinate, nodeTwoYCoordinate, nodeTwoFruitNum, nodeTwoLengthDistance] =
-        nodeTwo;
+const areConnected = (treeOne, treeTwo) => {
+    const [treeOneXcoordinate, treeOneYCoordinate, treeOneFruitNum, treeOneVineLength] = treeOne;
+    const [treeTwoXcoordinate, treeTwoYCoordinate, treeTwoFruitNum, treeTwoVineLength] = treeTwo;
 
-    const distanceBetweenNodes = getDistanceBetweenNodes(
-        [nodeOneXcoordinate, nodeOneYCoordinate],
-        [nodeTwoXcoordinate, nodeTwoYCoordinate],
+    const distanceBetweenTrees = getDistanceBetweenNodes(
+        [treeOneXcoordinate, treeOneYCoordinate],
+        [treeTwoXcoordinate, treeTwoYCoordinate],
     );
 
-    const smallestDistanceBetweenTwoNodes = Math.min(nodeOneLengthDistance, nodeTwoLengthDistance);
-    return distanceBetweenNodes <= smallestDistanceBetweenTwoNodes;
+    const smallestVineLength = Math.min(treeOneVineLength, treeTwoVineLength);
+    return distanceBetweenTrees <= smallestVineLength;
 };
 
 const buildGraph = (nodes) => {
@@ -68,19 +66,20 @@ const buildGraph = (nodes) => {
     return graph;
 };
 
-const getComponent = (startNode, graph, visited, nodes) => {
+const getComponentSize = (startNode, graph, visited, nodes) => {
     const queue = new Queue();
 
     visited.add(startNode);
     queue.enqueue(startNode);
 
-    let numAmount = 0;
+    let componentSize = 0;
     while (queue.size() > 0) {
         //  Remove node
         const node = queue.dequeue();
 
         // Process node
-        numAmount += nodes[node][2];
+        const currentNodeSize = nodes[nodeId][2];
+        componentSize += currentNodeSize;
 
         // Get neighbors
         const containsNode = graph.hasOwnProperty(node);
@@ -95,7 +94,7 @@ const getComponent = (startNode, graph, visited, nodes) => {
         }
     }
 
-    return numAmount;
+    return componentSize;
 };
 
 const getMaxFruit = (trees) => {
@@ -107,7 +106,7 @@ const getMaxFruit = (trees) => {
     for (let tree = 0; tree < numTress; tree++) {
         if (treeVisited.has(tree)) continue;
 
-        const currMaxfruit = getComponent(tree, graph, treeVisited, trees);
+        const currMaxfruit = getComponentSize(tree, graph, treeVisited, trees);
         maxFruit = Math.max(maxFruit, currMaxfruit);
     }
 
