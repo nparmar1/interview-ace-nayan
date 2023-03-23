@@ -3,14 +3,13 @@ For this approach, we can represent the input data as graph where the cities
 connecting to each other can be reprsented as nodes
 
 and the roads can be represented as edges. 
-Also by looking at the input, we can represent the graph as undirected and build an adjacency list.  
+Also by looking at the input, we can represent the graph as undirected and build an adjacency list.
+Thus, for finding the shortest path between two cities, we can find the shorest path the same way we would between nodes in our graph.
+A BFS would be a good approach, since we know that using a BFS, you're guaranteed to find the shorest path, so we can go with that approach. 
 */
 
 /*
 Question:
-Thus, for finding the shortest path between two cities, we can find the shorest path the same way we would between nodes in our graph.
-A BFS would be a good approach, since we know that using a BFS, you're guaranteed to find the shorest path, so we can go with that approach.
-
 Given 3 inputs: a start city, an end city, and a list of roads, return the shortest path (as an array) from the start city to the end city.
 */
 
