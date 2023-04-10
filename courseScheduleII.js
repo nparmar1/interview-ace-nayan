@@ -1,13 +1,16 @@
 /*
-For this approach, we can represent the input as a graph where in order to take a course, 
-you have to complete a prereq, which is the same as two nodes conntected by an edge.
- 
-In order to traverse to the next node, you have to start with the one connected to it prior. 
-As you can see, it's going to be a directed graph, since we can also travel in one direction.
+For this approach, we can represent the input as a dependency graph where in order to take a course, 
+you have to complete a prereq, which is the same as two nodes connected by an edge.
 
-Since we are trying to find a valid ordering for all these courses that respects our prereqs, 
-we can approach it the same way that processes all of ours nodes that respects the ordering of ours edges.
-Thus we can use a BFS that allows use a top sort algorithm.
+Since we are trying to find a valid ordering for all these courses that respects our prereqs,
+we can approach this problem with a topological sort algorithm where if there happens to be an
+edge between a prereq and a class, it means that the prereq appears before the class in a linear ordering fashion.
+
+A class that has a prereq before would be an indegree relationship and we can the can use our topological sort algorithm to track
+the number of indegrees. We can create a hashmap, in this case a JavsScript object, that maps all the classes
+to its prereqs and decrease the number of indegrees once we process that class.
+
+That way we're left with 0 indegree classes in a valid order.
 */
 
 /*
@@ -37,7 +40,7 @@ const buildGraph = (numNodes, prereqNodes) => {
 
         graph[prereq].push(mainCource);
     }
-
+    console.log(graph);
     return graph;
 };
 
@@ -52,7 +55,7 @@ const getIndegreeMap = (numNodes, prereqNodes) => {
         const [node, prereq] = prereqNode;
         indegreeMap[node]++;
     }
-
+    console.log(indegreeMap);
     return indegreeMap;
 };
 

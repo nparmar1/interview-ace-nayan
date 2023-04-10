@@ -1,11 +1,12 @@
 /*
-For this approach, we can represent the input data as graph where the cities 
-connecting to each other can be reprsented as nodes
-
-and the roads can be represented as edges. 
+We can represent the input data as a graph where the cities are reprsented as nodes and the roads as edges. 
 Also by looking at the input, we can represent the graph as undirected and build an adjacency list.
-Thus, for finding the shortest path between two cities, we can find the shorest path the same way we would between nodes in our graph.
-A BFS would be a good approach, since we know that using a BFS, you're guaranteed to find the shorest path, so we can go with that approach. 
+Thus, for finding the shortest path between two cities, we can find the shorest path the same way 
+we would between nodes in our graph using a BFS.
+
+But we need to find the path itself. So when we reach a node for the first time, the node previously
+would be the ideal node to come from since it will be the shorest path. Thus, be can build a object
+that maps the current node with the previous node.
 */
 
 /*
@@ -71,7 +72,7 @@ const getShortestPath = (startNode, endNode, nodes) => {
             queue.enqueue({ node: neighbor, prevNode: node });
         }
     }
-
+    console.log(prevNodesMap);
     return createPath(startNode, endNode, prevNodesMap);
 };
 
