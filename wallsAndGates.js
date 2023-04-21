@@ -1,4 +1,22 @@
 /*
+Just as the previous question, we're going to represent our input as a grid where 
+we're only concerned about the the empty rooms (represnted as 2147483647), since we're trying 
+to find the distance for each empty room that is the closest to the nearest gate (represnted as 0). 
+
+For this approach, we're going to use a multi-sourced BFS again to find the distance to the nearest gate 
+and the way that works is we're going to gather the location of all the gates first and add them to the queue,
+that way we can process them together. During the iteration, we're going to BFS each of those 
+locations in all 4 directions and until we reach an empty room. Once we reach an empty room,
+we mark it with the current traveled distance so far.
+
+Since we're using a BFS, we can tranverse in levels and mark the locations we have visited and skip the ones
+we have already visited. That way can keep track of the distance traveled so far and only update it
+if we're visiting a location for the first time and since it will be the first time, it will be
+the shorest path.
+*/
+
+/*
+Question:
 You are given an m x n grid rooms initialized with these three possible values.
 
 - -1 A wall or an obstacle.
