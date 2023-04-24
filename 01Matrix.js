@@ -22,7 +22,7 @@ Given an m x n binary matrix mat, return the distance of the nearest 0 for each 
 The distance between two adjacent cells is 1.
 */
 
-const { Queue } = require('../../../utils/queue');
+const { Queue } = require('./utils/queue');
 
 //    0  1  2
 // 0 [0, 0, 0],
@@ -42,7 +42,7 @@ const getRowColString = (rowCol) => {
     return `${row}, ${col}`;
 };
 
-const getZeroFilledMatrix = (grid, fillWithValue) => {
+const getValueFilledMatrix = (grid, fillWithValue) => {
     const numRows = grid.length;
     const numCols = grid[0].length;
 
@@ -99,7 +99,7 @@ const getDistanceFromZero = (grid) => {
     const queue = new Queue();
     const visited = new Set();
 
-    const zeroFilledGrid = getZeroFilledMatrix(grid, 0);
+    const valueFilledMatrix = getValueFilledMatrix(grid, 0);
     const zeroLocations = getZeroLocations(grid);
 
     for (const zeroLocation of zeroLocations) {
@@ -112,7 +112,7 @@ const getDistanceFromZero = (grid) => {
         const { row, col, distanceFromZero } = queue.dequeue();
 
         // Process row, col
-        if (grid[row][col] === 1) zeroFilledGrid[row][col] = distanceFromZero;
+        if (grid[row][col] === 1) valueFilledMatrix[row][col] = distanceFromZero;
 
         // Get children
         const children = getChildren(row, col, grid);
@@ -124,7 +124,7 @@ const getDistanceFromZero = (grid) => {
         }
     }
 
-    return zeroFilledGrid;
+    return valueFilledMatrix;
 };
 
 const matrix = [

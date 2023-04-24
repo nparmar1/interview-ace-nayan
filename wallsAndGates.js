@@ -72,7 +72,7 @@ const getGateLocationString = (gateLocation) => {
     return `${row}, ${col}`;
 };
 
-const getGateLocations = (matrix) => {
+const getMatchingLocations = (matrix, value) => {
     const array = [];
 
     const numRows = matrix.length;
@@ -80,7 +80,7 @@ const getGateLocations = (matrix) => {
 
     for (let row = 0; row < numRows; row++) {
         for (let col = 0; col < numCols; col++) {
-            if (matrix[row][col] === GATE) {
+            if (matrix[row][col] === value) {
                 array.push({ row, col });
             }
         }
@@ -93,7 +93,7 @@ const getDistanceToNearestGate = (rooms) => {
     const queue = new Queue();
     const visited = new Set();
 
-    const gateLocations = getGateLocations(rooms);
+    const gateLocations = getMatchingLocations(rooms, GATE);
 
     for (const gateLocation of gateLocations) {
         const gateLocationString = getGateLocationString(gateLocation);
