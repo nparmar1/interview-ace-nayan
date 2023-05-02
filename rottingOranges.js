@@ -5,7 +5,7 @@ number of fresh oranges in the grid and keep track of them as we traverse/BFS-in
 
 Once in the queue, we can traverse the grid, perform a BFS until we find a fresh orange
 and update the current time so far but only if it's the first time visiting that fresh orange. We will
-use a visited set to keep track of call the fresh oranges visited.
+use a visited set to keep track of all the fresh oranges visited.
 
 As we're BFS-ing the grid, we can keep track of the number of fresh oranges and decrese it by 1 if it's
 our first time visiting that fresh orange. Once we reach 0 fresh oranges, we can return the current time.
