@@ -24,9 +24,10 @@ You may change 0's to 1's to connect the two islands to form one island.
 Return the smallest number of 0's you must flip to connect the two islands.
 */
 
-const { Queue } = require('../../../utils/queue');
+const { Queue } = require('./utils/queue');
 
 const LAND = 1;
+const NO_SECOND_ISLAD = -1;
 
 const directions = [
     [0, 1],
@@ -134,9 +135,11 @@ const getShortestBridge = (grid, firstIslandCoordinates) => {
         const isIslandVisited = visited.has(getRowColString({ row, col }));
         const terrain = grid[row][col];
 
-        if (!isIslandVisited && terrain === LAND) {
-            const bridgeNum = path - 1;
-            return bridgeNum;
+        isLoctionVisitedAndLand = !isIslandVisited && terrain === LAND;
+
+        if (isLoctionVisitedAndLand) {
+            const numOfWaterCelltoFlip = path - 1;
+            return numOfWaterCelltoFlip;
         }
 
         visited.add({ row, col });
@@ -150,6 +153,8 @@ const getShortestBridge = (grid, firstIslandCoordinates) => {
             queue.enqueue({ ...child, path: path + 1 });
         }
     }
+
+    return NO_SECOND_ISLAD;
 };
 
 const getBestBridge = (grid) => {
@@ -167,7 +172,7 @@ console.log(`Your answer: ${getBestBridge(grid)}`);
 console.log(`Correct answer: ${1}`);
 
 grid = [
-    [0, 1, 0],
+    [0, 0, 0],
     [0, 0, 0],
     [0, 0, 1],
 ];

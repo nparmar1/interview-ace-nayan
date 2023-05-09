@@ -23,7 +23,7 @@ Every minute, any fresh orange that is 4-directionally adjacent to a rotten oran
 Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
 */
 
-const { Queue } = require('../../../utils/queue');
+const { Queue } = require('./utils/queue');
 
 const directions = [
     [-1, 0],
