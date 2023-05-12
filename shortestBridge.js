@@ -154,7 +154,7 @@ const getShortestBridge = (grid, firstIslandCoordinates) => {
         }
     }
 
-    return NO_SECOND_ISLAD;
+    throw new Error('No second island found');
 };
 
 const getBestBridge = (grid) => {
